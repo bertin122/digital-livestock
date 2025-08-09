@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../constants/urls';
+import { useNavigate } from 'react-router-dom';
 
 const CenterBanner = () => {
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const navigate = useNavigate()
  const nn='>>';
   useEffect(() => {
     fetch(`${BASE_URL}/api/cows/byid`, {    
@@ -27,7 +29,7 @@ const CenterBanner = () => {
    <div className="h-full w-[58%]   border-red-400 justify-between">
   <div className="h-[65%]  rounded-2xl flex justify-between items-center overflow-visible relative">
     <div className="w-[40%] h-full bg-[rgb(138,134,134)] rounded-l-2xl ">
-      {/* left content */}
+      
     </div>
 
     <div className="w-[60%] h-full bg-[rgb(138,134,134)] rounded-r-2xl  overflow-hidden relative">
@@ -57,7 +59,7 @@ const CenterBanner = () => {
           <button
               className="bg-white text-black font-semibold px-8 py-2 rounded-lg transition duration-200
                 shadow-[0_6px_10px_-2px_rgba(0,0,0,0.5),0_3px_6px_-1px_rgba(0,0,0,0.3)]
-                hover:bg-gray-100"
+                hover:bg-gray-100" onClick={() => navigate('/cow/2')}
             >
               BUY NOW
          </button>

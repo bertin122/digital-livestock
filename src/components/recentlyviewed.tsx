@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Check } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../constants/urls'
 
 interface Cow {
@@ -20,9 +19,8 @@ interface Cow {
   discount: string
 }
 
-const CowsRow: React.FC = () => {
+const Recentlyviewed: React.FC = () => {
   const [cows, setCows] = useState<Cow[]>([])
-  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchCows = async () => {
@@ -42,24 +40,16 @@ const CowsRow: React.FC = () => {
   }, [])
 
   return (
-    <div className="w-full mt-[2%] flex flex-wrap pl-7 justify-start rounded-3xl bg-white gap-12 mt-[1%]">
-      {cows.map((cow) => (
-        <div
-          key={cow.id}
-          onClick={() => navigate(`/cow/${cow.id}`)}
-          className="w-70 bg-white flex flex-col border-green-700 rounded-2xl cursor-pointer hover:shadow-lg transition-shadow"
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              navigate(`/cow/${cow.id}`)
-            }
-          }}
-        >
+    <div className="w-full flex flex-wrap pl-7 justify-start rounded-3xl bg-white gap-12  mt-[1%]">
+
+     {cows.slice(0, 5).map((cow) => (
+        <div key={cow.id} className="w-70 bg-white flex flex-col border-green-700 rounded-2xl">
           <div className="ml-[5%] mt-2 w-[90%] h-[80%]">
             <div className="relative h-[300px] border-red-500">
               <div className="absolute z-20 bg-green-500 rounded-xl flex justify-center items-center w-[17%] h-[20%] top-0 left-0">
-                <p className="text-white text-sm font-bold">-20%</p>
+                <p className="text-white text-sm font-bold">
+                   -20%
+                </p>
               </div>
               <div className="absolute z-10 w-[90%] left-[5%] mt-[10%] rounded-2xl h-[50%] rounded-lg">
                 <img
@@ -78,26 +68,25 @@ const CowsRow: React.FC = () => {
             </div>
 
             <div className="w-full flex justify-start items-center border-red-600 h-[40%]">
-              <p
-                className="font-bold text-xl"
-                style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}
-              >
-                ${cow.price}
-              </p>
+             <p className="font-bold text-xl" style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
+               ${cow.price}
+             </p>
+
             </div>
             <div className="h-[20%] w-full flex">
               <p className="text-green-700 font-bold text-sm">Free shipping</p>
             </div>
             <div className="h-[20%] w-full flex">
-              <div
-                className={`w-[7%] h-[100%] flex justify-center items-center rounded-full ${
-                  cow.purchase_status.toLowerCase() === 'purchased'
-                    ? 'bg-red-500'
-                    : cow.purchase_status.toLowerCase() === 'offered'
-                    ? 'bg-yellow-500'
-                    : 'bg-green-500'
-                }`}
-              >
+            <div
+              className={`w-[7%] h-[100%] flex justify-center items-center rounded-full ${
+                 cow.purchase_status.toLowerCase() === 'purchased'
+                   ? 'bg-red-500'
+                   : cow.purchase_status.toLowerCase() === 'offered'
+                   ? 'bg-yellow-500'
+                   : 'bg-green-500'
+               }`}
+               >
+
                 <Check size={10} color="white" />
               </div>
               <p className="text-black ml-[4%] font-bold text-sm">{cow.purchase_status}</p>
@@ -109,4 +98,4 @@ const CowsRow: React.FC = () => {
   )
 }
 
-export default CowsRow
+export default Recentlyviewed

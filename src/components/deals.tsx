@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Check, Dot } from 'lucide-react';
 import { BASE_URL } from '../constants/urls';
+import { useNavigate } from 'react-router-dom';
 
 const CowCard = () => {
   const [cow, setCow] = useState<any>(null);
   const [ownerName, setOwnerName] = useState<string>('');
   const [categoryName, setCategoryName] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/cows/byid`, {
@@ -40,19 +42,20 @@ const CowCard = () => {
       .catch(err => console.error(err));
   }, []);
 
+  if (!cow) return null;
+
   const discountPercent = cow?.price && cow?.discount
     ? Math.round(((Number(cow.price) - Number(cow.discount)) / Number(cow.price)) * 100)
     : 0;
 
-
   return (
-    <div className='w-[90%] h-[50%] justify-between flex mt-[2%] ml-[5%]'>
-      <div className='w-[70%] h-full mb-[3%] flex flex-col justify-between'>
-        <div className='w-full flex items-center h-[15%] bg-green-500 rounded-2xl'>
+    <div className='w-[90%] flex  h-[50%] items-center justify-between  mt-[2%] ml-[5%]'>
+      <div className='w-[70%]  h-full flex flex-col justify-between'>
+        <div className='w-full  flex items-center h-20 bg-green-500 rounded-2xl'>
           <p className='ml-[3%] text-white font-bold text-2xl'> DEALS OF THE DAY</p>
         </div>
 
-        <div className='w-full h-[80%] justify-between rounded-3xl flex'>
+        <div className='w-full  mt-2 h-120 justify-between rounded-3xl flex'>
           <div
             className='w-[69%] rounded-3xl h-full'
             style={{
@@ -83,7 +86,6 @@ const CowCard = () => {
                </p>
             </div>
 
-
             <div className='w-ful ml-5 h-[8%] flex items-center'>
               <Dot className="w-13 h-13 text-black-500" /> <p className='font-bold'> Age: {cow?.age} years</p>
             </div>
@@ -111,14 +113,14 @@ const CowCard = () => {
             </div>
 
             <div className='w-full ml-5 h-[14%] mt-[1%] flex justify-start items-center'>
-              <button className="h-[70%] w-[40%] bg-black text-white rounded-xl">Add to Cart</button>
-              <button className="h-[70%] w-[40%] ml-3 bg-black text-white rounded-xl">Buy Now</button>
+              <button className="h-[70%] w-[40%] bg-black text-white rounded-xl"  onClick={() => navigate('/cow/1')}>Add to Cart</button>
+              <button className="h-[70%] w-[40%] ml-3 bg-black text-white rounded-xl" onClick={() => navigate('/cow/1')}>Buy Now</button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className='w-[29%] h-full flex flex-col justify-between '>
+      <div className='w-[29%]  h-142 flex flex-col justify-between '>
         <div
           className='w-full h-[48%]  rounded-3xl'
           style={{

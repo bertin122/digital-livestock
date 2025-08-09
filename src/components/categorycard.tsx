@@ -18,10 +18,10 @@ const CategoryCard = () => {
   }, []);
 
   return (
-    <div className='flex  h-[80%] mt-[1%] gap-[1%]  border-red-400 overflow-x-auto'>
+    <div className='flex   mt-[1%] gap-[1%]  border-red-400 '>
 
       {categories.map((category) => (
-        <div key={category.id} className='w-[15%]  bg-white rounded-3xl flex flex-col h-full min-w-[150px]'>
+        <div key={category.id} className='w-[15%]   bg-white rounded-3xl flex flex-col h-35 '>
           <div className='h-[80%] w-full '>
             <img 
               src={category.photo} 
