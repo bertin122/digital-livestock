@@ -1,0 +1,7 @@
+- [x] Create src/components/Footer.tsx with the footer component
+- [x] Update src/Landing.tsx to import Footer and replace inline footer
+- [x] Verify footer renders correctly in landing page
+- [x] Add responsive mobile menu bar to navigation
+- [ ] Connect Contact component to Contact link in nav bar
+- [ ] Ensure overall page responsiveness
+- [ ] Test the responsive design
