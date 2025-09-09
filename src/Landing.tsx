@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Footer from "./components/Footer";
 
 const CowMarketLandingPage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const totalSlides = 3;
 
   // Auto-slide functionality
@@ -38,31 +41,96 @@ const CowMarketLandingPage = () => {
               >
                 Browse Cattle
               </a>
-              <a
-                href="#"
+              <Link
+                to="/about"
                 className="text-gray-700 hover:text-gray-900 font-medium"
               >
                 About Us
-              </a>
+              </Link>
               <a
                 href="#"
                 className="text-gray-700 hover:text-gray-900 font-medium"
               >
                 Services
               </a>
-              <a
-                href="#"
+              <Link
+                to="/contact"
                 className="text-gray-700 hover:text-gray-900 font-medium"
               >
                 Contact
-              </a>
+              </Link>
               <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-medium transition duration-200">
                 Login
+              </button>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-gray-700 hover:text-gray-900 focus:outline-none"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
               </button>
             </div>
           </div>
         </div>
       </nav>
+
+      {/* Mobile menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white shadow-lg">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            <a
+              href="#"
+              className="block px-3 py-2 text-gray-700 hover:text-gray-900"
+            >
+              Home
+            </a>
+            <a
+              href="#"
+              className="block px-3 py-2 text-gray-700 hover:text-gray-900"
+            >
+              Browse Cattle
+            </a>
+            <Link
+              to="/about"
+              onClick={() => setIsMenuOpen(false)}
+              className="block px-3 py-2 text-gray-700 hover:text-gray-900"
+            >
+              About Us
+            </Link>
+            <a
+              href="#"
+              className="block px-3 py-2 text-gray-700 hover:text-gray-900"
+            >
+              Services
+            </a>
+            <Link
+              to="/contact"
+              onClick={() => setIsMenuOpen(false)}
+              className="block px-3 py-2 text-gray-700 hover:text-gray-900"
+            >
+              Contact
+            </Link>
+            <button className="block w-full text-left px-3 py-2 bg-green-500 text-white rounded-full">
+              Login
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <section className="relative text-white overflow-hidden">
@@ -103,14 +171,16 @@ const CowMarketLandingPage = () => {
               <button className="bg-white text-green-700 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-200">
                 Browse Cattle
               </button>
-              <button className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-green-700 transition duration-200">
+              <Link
+                to="/contact"
+                className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-green-700 transition duration-200"
+              >
                 Contact Us
-              </button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
-
       {/* Why Choose Section */}
       <section className="bg-white py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -157,7 +227,6 @@ const CowMarketLandingPage = () => {
           </div>
         </div>
       </section>
-
       {/* Video Section */}
       <section className="bg-gray-50 py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -196,7 +265,6 @@ const CowMarketLandingPage = () => {
           </div>
         </div>
       </section>
-
       {/* Features Section */}
       <section className="bg-white py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -288,7 +356,6 @@ const CowMarketLandingPage = () => {
           </div>
         </div>
       </section>
-
       {/* CTA Section */}
       <section className="bg-green-50 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -297,7 +364,6 @@ const CowMarketLandingPage = () => {
           </button>
         </div>
       </section>
-
       {/* User Categories */}
       <section className="bg-white py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -356,140 +422,8 @@ const CowMarketLandingPage = () => {
           </div>
         </div>
       </section>
-
       {/* Footer */}
-      <footer className="bg-green-800 text-white py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-5 gap-8">
-            <div>
-              <h4 className="text-lg font-semibold mb-4">PLATFORM</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    Browse Cattle
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    Sell Cattle
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    Terms of Service
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    Trading Guidelines
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    Safety Standards
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-lg font-semibold mb-4">SERVICES</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    Health Verification
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    Transportation
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    Pricing
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    Contact Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-green-200">
-                    Success Stories
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-lg font-semibold mb-4">CONTACT</h4>
-              <ul className="space-y-2 text-sm">
-                <li>📞 1-800-COW-TRADE</li>
-                <li>📧 support@cowmarket.com</li>
-              </ul>
-              <div className="mt-6">
-                <h5 className="font-semibold mb-2">SOCIAL</h5>
-                <div className="flex space-x-2">
-                  <a
-                    href="#"
-                    className="w-8 h-8 bg-green-600 rounded flex items-center justify-center hover:bg-green-500"
-                  >
-                    <span className="text-xs">f</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="w-8 h-8 bg-green-600 rounded flex items-center justify-center hover:bg-green-500"
-                  >
-                    <span className="text-xs">t</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-lg font-semibold mb-4">MARKETPLACE</h4>
-              <p className="text-sm mb-4">
-                Join thousands of farmers and ranchers trading premium cattle
-                with complete confidence and security on our platform.
-              </p>
-              <button className="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-500 transition duration-200">
-                Start Trading Today
-              </button>
-            </div>
-
-            <div>
-              <button className="bg-orange-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-orange-500 transition duration-200 mb-4">
-                🐄 List Your Cattle
-              </button>
-            </div>
-          </div>
-
-          <div className="border-t border-green-700 mt-12 pt-8 text-center">
-            <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-8 bg-green-600 rounded flex items-center justify-center text-white font-bold text-sm mr-2">
-                🐄
-              </div>
-              <span className="font-semibold">CowMarket</span>
-            </div>
-            <p className="text-sm text-green-200">
-              Connecting farmers, ranchers, and buyers in the most trusted
-              cattle marketplace. Quality guaranteed, transactions secured.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
