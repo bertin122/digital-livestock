@@ -15,6 +15,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import Navbar from "./components/Navbar";
 
 const AboutUs = ({
   setShowAboutUs,
@@ -109,9 +110,10 @@ const AboutUs = ({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Navbar />
       <button
         onClick={() => setShowAboutUs(false)}
-        className="fixed top-4 left-4 bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition duration-200 z-10"
+        className="fixed top-20 left-4 bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition duration-200 z-10"
       >
         Back to Home
       </button>

@@ -80,8 +80,8 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">CONTACT</h4>
             <ul className="space-y-2 text-sm">
-              <li>📞 1-800-COW-TRADE</li>
-              <li>📧 support@cowmarket.com</li>
+              <li>📞 0788726254</li>
+              <li>📧 support@dlivestock.com.com</li>
             </ul>
             <div className="mt-6">
               <h5 className="font-semibold mb-2">SOCIAL</h5>
@@ -125,7 +125,7 @@ const Footer = () => {
             <div className="w-8 h-8 bg-green-600 rounded flex items-center justify-center text-white font-bold text-sm mr-2">
               🐄
             </div>
-            <span className="font-semibold">CowMarket</span>
+            <span className="font-semibold">D-LIVESTOCK</span>
           </div>
           <p className="text-sm text-green-200">
             Connecting farmers, ranchers, and buyers in the most trusted cattle
