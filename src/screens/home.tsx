@@ -9,6 +9,7 @@ import { Categorydiscount } from "../components/categorydiscount";
 import Cowsrow from "../components/cowsrow";
 import Header from "../components/header";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
@@ -38,6 +39,7 @@ const Home = () => {
         <Cowsrow />
       </div>
       <div className="w-full border h-[40%] mt-[2%]"></div>
+      <Footer />
     </div>
   );
 };

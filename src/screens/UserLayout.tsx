@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { useAdmin } from "../contexts/AdminContext";
+// import Footer from "../components/Footer";
 
 const UserLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -73,7 +74,7 @@ const UserLayout: React.FC = () => {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="bg-white shadow-sm border-b">
           <div className="flex items-center justify-between px-4 py-3">
@@ -95,9 +96,12 @@ const UserLayout: React.FC = () => {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-auto p-6">
-          <Outlet />
-        </main>
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <main className="flex-1 overflow-auto p-6">
+            <Outlet />
+          </main>
+          {/* <Footer /> */}
+        </div>
       </div>
 
       {/* Overlay for mobile */}

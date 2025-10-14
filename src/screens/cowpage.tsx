@@ -7,6 +7,7 @@ import Rightcowcard from "../components/rightcowcard";
 import Recentlyviewed from "../components/recentlyviewed";
 import Header from "../components/header";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const CowPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,6 +47,7 @@ const CowPage = () => {
       </div>
 
       <div className="w-full   mt-[2%]"></div>
+      <Footer />
     </div>
   );
 };

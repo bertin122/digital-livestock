@@ -16,6 +16,7 @@ import {
   Mail,
 } from "lucide-react";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 const AboutUs = ({
   setShowAboutUs,
@@ -109,7 +110,7 @@ const AboutUs = ({
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navbar />
       <button
         onClick={() => setShowAboutUs(false)}

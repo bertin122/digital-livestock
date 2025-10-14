@@ -8,6 +8,8 @@ import {
   User,
   CreditCard,
 } from "lucide-react";
+import { BASE_URL } from "./constants/urls";
+import { setUserId } from "./services/auth";
 
 const RegisterCard: React.FC = () => {
   const [name, setName] = useState("");
@@ -29,13 +31,19 @@ const RegisterCard: React.FC = () => {
       return;
     }
 
+    const isGmail = /.+@gmail\.com$/i.test(email.trim());
+    if (!isGmail) {
+      setError("Only Gmail addresses (@gmail.com) are allowed to register.");
+      return;
+    }
+
     setError("");
     setLoading(true);
 
     try {
       // 1️⃣ Register
       const registerResponse = await fetch(
-        "http://localhost:3000/user/api/signup",
+        `${BASE_URL}/user/api/signup`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -57,7 +65,7 @@ const RegisterCard: React.FC = () => {
 
       // 2️⃣ Auto login
       const loginResponse = await fetch(
-        "http://localhost:3000/user/api/signin",
+        `${BASE_URL}/user/api/signin`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -72,15 +80,29 @@ const RegisterCard: React.FC = () => {
       }
 
       // 3️⃣ Store tokens locally
-      localStorage.setItem("accessToken", loginData.accessToken);
-      localStorage.setItem("refreshToken", loginData.refreshToken);
+      const accessToken = loginData.accessToken || loginData.token || loginData.access_token;
+      const refreshToken = loginData.refreshToken || loginData.refresh_token;
+      if (accessToken) localStorage.setItem("accessToken", accessToken);
+      if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
+
+      localStorage.setItem("token", accessToken || "");
+      localStorage.setItem("isAdmin", "false");
+
+      // Capture and store user id if present
+      const userId =
+        loginData.user?.id || loginData.userId || loginData.user_id || loginData.id;
+      if (userId != null) setUserId(userId);
 
       console.log("🔐 Logged in & tokens saved");
 
       // 4️⃣ Redirect
       window.location.href = "/home";
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
     } finally {
       setLoading(false);
     }

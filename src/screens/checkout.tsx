@@ -6,6 +6,9 @@ import { BASE_URL } from "../constants/urls";
 import Modal from "../modals/modal";
 import OrderCard from "../components/ordercard";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { createOrdersForCart } from "../services/orders";
+import { getUserId } from "../services/auth";
 
 interface Cow {
   id: number;
@@ -41,10 +44,15 @@ const Checkout: React.FC = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
+        const uid = getUserId();
+        if (!uid) {
+          setCartItems([]);
+          return;
+        }
         const res = await fetch(`${BASE_URL}/api/cart/itemsbyid`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: 1 }),
+          body: JSON.stringify({ user_id: uid }),
         });
         if (!res.ok) throw new Error(`Error ${res.status}`);
         const data: CartItem[] = await res.json();
@@ -83,30 +91,25 @@ const Checkout: React.FC = () => {
       return;
     }
 
-    const addresses = [province, territory, sector, quarter, village];
+    const uid = getUserId();
+    if (!uid) {
+      showError("Please login first");
+      return;
+    }
 
     try {
-      for (const item of cartItems) {
-        const res = await fetch(`${BASE_URL}/api/order/create`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user_id: 1,
-            cow_id: item.cow.id,
-            address: addresses,
-          }),
-        });
-
-        if (!res.ok) {
-          const error = await res.json();
-          console.error(
-            "Order creation failed:",
-            error.message || "Unknown error"
-          );
-          showError("Failed to create order!");
-          return;
-        }
-      }
+      await createOrdersForCart({
+        userId: uid,
+        cartItems: cartItems.map((ci) => ({ id: ci.id, cow: ci.cow })),
+        address: {
+          province,
+          territory,
+          sector,
+          quarter,
+          village,
+        },
+        phone,
+      });
 
       console.log("All orders placed successfully");
       setModalType("success");
@@ -244,6 +247,7 @@ const Checkout: React.FC = () => {
         />
       </div>
 
+      <Footer />
       <div className="w-full h-[20%] mt-[2%]"></div>
 
       {showModal && modalMessage && modalType && (

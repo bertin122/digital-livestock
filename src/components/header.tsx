@@ -2,6 +2,7 @@ import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import { BASE_URL } from "../constants/urls";
+import { getUserId } from "../services/auth";
 
 import { useNavigate } from "react-router-dom";
 
@@ -11,15 +12,20 @@ const Header = () => {
 
   useEffect(() => {
     const fetchCartCount = async () => {
+      const uid = getUserId();
+      if (!uid) {
+        setCartCount(0);
+        return;
+      }
       try {
         const res = await fetch(`${BASE_URL}/api/cart/countbyuserid`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: 1 }),
+          body: JSON.stringify({ user_id: uid }),
         });
         if (!res.ok) throw new Error("Failed to fetch cart count");
         const data = await res.json();
-        setCartCount(data.count);
+        setCartCount(Number(data.count) || 0);
       } catch (error) {
         console.error(error);
       }
@@ -36,7 +42,7 @@ const Header = () => {
       <div className="w-full  border-red-800 min-h-[20px]"></div>
       <div className="min-h-[80px] flex items-center  w-full bg-green-500">
         <div className="w-[88%] ml-[6%] h-[100%]  border-red-400 bg-green-500 flex justify-between items-center">
-          <div className="w-[30%]  h-[60%] min-h-[50px]  border-red-500 rounded-3xl justify-between flex items-center bg-white">
+          <div className="w-[30%]  h-[60%] min-h-[50px]  border-red-100 rounded-3xl justify-between flex items-center bg-white">
             <div className="w-[41%]   border-red-400 h-full rounded-l-3xl flex items-center">
               <select
                 className="w-full h-full rounded-l-3xl px-4 text-sm border-none outline-none cursor-pointer"

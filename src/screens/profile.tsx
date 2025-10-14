@@ -1,103 +1,152 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Header from "../components/header";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Settings, User as UserIcon, Package, BarChart3, Bug } from "lucide-react";
 import OrdersCard from "../components/orderscard";
 import UserDetails from "../components/userdetails";
-import { BASE_URL } from "../constants/urls";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import ProfileHeader from "../components/ProfileHeader";
+import UserDashboard from "./UserDashboard";
+import { UserProvider } from "../contexts/UserContext";
+import { testServerConnectivity } from "../utils/serverDiagnostic";
 
-interface UserData {
-  email: string;
-  password: string;
-  firstname: string;
-  lastname: string;
-}
+type ActiveTab = "dashboard" | "account" | "orders" | "settings";
 
 const Profile: React.FC = () => {
-  const [user, setUser] = useState<UserData>({
-    email: "",
-    password: "",
-    firstname: "",
-    lastname: "",
-  });
+  const [activeTab, setActiveTab] = useState<ActiveTab>("dashboard");
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<"account" | "orders">("account");
+  const tabs = [
+    {
+      id: "dashboard" as const,
+      label: "Dashboard",
+      icon: BarChart3,
+      description: "Overview of your account"
+    },
+    {
+      id: "account" as const,
+      label: "Account Info",
+      icon: UserIcon,
+      description: "Manage your personal information"
+    },
+    {
+      id: "orders" as const,
+      label: "My Orders",
+      icon: Package,
+      description: "View your order history"
+    },
+    {
+      id: "settings" as const,
+      label: "Settings",
+      icon: Settings,
+      description: "Account preferences and security"
+    }
+  ];
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/user/namebyid`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: 1 }),
-        });
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-        const data: UserData = await res.json();
-        setUser(data);
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
-    fetchUser();
-  }, []);
+  const renderContent = () => {
+    switch (activeTab) {
+      case "dashboard":
+        return <UserDashboard />;
+      case "account":
+        return <UserDetails />;
+      case "orders":
+        return <OrdersCard />;
+      case "settings":
+        return (
+          <div className="text-center py-12">
+            <Settings className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Settings</h3>
+            <p className="text-gray-500">Settings panel coming soon...</p>
+          </div>
+        );
+      default:
+        return <UserDashboard />;
+    }
+  };
 
   return (
-    <div className="bg-[rgb(216,209,209)] w-full h-auto flex flex-col overflow-y-auto">
-      <Navbar />
-      <Header />
-
-      <div className="p-12  bg-white gap-5 flex items-end rounded-3xl ml-[5%] mt-[1%] w-[90%] border-yellow-500 justify-between">
-        {/* Left Sidebar */}
-        <div className="w-[25%] flex flex-col items-start  rounded-2xl p-4 h-120 bg-white shadow-md">
-          <div className="w-[60%] rounded-2xl overflow-hidden  mb-4">
-            <img
-              src="https://res.cloudinary.com/dlezmeikx/image/upload/v1755111372/profile_lzhjnt.png"
-              alt="Profile"
-              className="w-full h-full object-cover"
+    <UserProvider>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <Header />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="space-y-8">
+            {/* Profile Header */}
+            <ProfileHeader 
+              showEditButton={activeTab === "account"}
+              onEditClick={() => setIsEditingProfile(!isEditingProfile)}
             />
-          </div>
-
-          <div className="flex flex-col items-start mb-6">
-            <p className="font-bold text-lg">
-              {user.firstname} {user.lastname}
-            </p>
-            <p className="text-gray-500 text-sm">{user.email}</p>
-          </div>
-
-          <div className="flex flex-col w-full gap-3">
-            <button
-              onClick={() => setActiveTab("account")}
-              className={`flex justify-between items-center w-full px-4 py-3 rounded-lg transition ${
-                activeTab === "account"
-                  ? "bg-green-500 text-white hover:bg-green-600"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              <span>Account Info</span>
-              <ChevronRight size={20} />
-            </button>
-
-            <button
-              onClick={() => setActiveTab("orders")}
-              className={`flex justify-between items-center w-full px-4 py-3 rounded-lg transition ${
-                activeTab === "orders"
-                  ? "bg-green-500 text-white hover:bg-green-600"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              <span>My Orders</span>
-              <ChevronRight size={20} />
-            </button>
+            
+            {/* Diagnostic Tools (temporary - for debugging) */}
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Bug className="w-5 h-5 text-yellow-600 mr-2" />
+                  <div>
+                    <h3 className="text-sm font-medium text-yellow-800">Debug Tools</h3>
+                    <p className="text-xs text-yellow-600">Click to test server connectivity and API endpoints</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    console.clear();
+                    testServerConnectivity();
+                  }}
+                  className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors text-sm font-medium"
+                >
+                  Test Server
+                </button>
+              </div>
+            </div>
+            
+            {/* Navigation Tabs */}
+            <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+              <div className="border-b border-gray-200">
+                <nav className="flex space-x-1 p-1">
+                  {tabs.map((tab) => {
+                    const Icon = tab.icon;
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`group relative flex items-center px-6 py-4 text-sm font-medium rounded-lg transition-all duration-200 ${
+                          activeTab === tab.id
+                            ? 'bg-blue-50 text-blue-700 shadow-sm'
+                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                        }`}
+                      >
+                        <Icon className={`w-5 h-5 mr-3 transition-colors ${
+                          activeTab === tab.id ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'
+                        }`} />
+                        <div className="text-left">
+                          <div className="font-medium">{tab.label}</div>
+                          <div className={`text-xs mt-0.5 ${
+                            activeTab === tab.id ? 'text-blue-600' : 'text-gray-500'
+                          }`}>
+                            {tab.description}
+                          </div>
+                        </div>
+                        {activeTab === tab.id && (
+                          <ChevronRight className="w-4 h-4 ml-auto text-blue-600" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </nav>
+              </div>
+              
+              {/* Content Area */}
+              <div className="p-8">
+                {renderContent()}
+              </div>
+            </div>
           </div>
         </div>
-
-        <div className="w-[70%]  h-120 p-4 flex flex-col justify-start gap-3 rounded-lg">
-          {activeTab === "account" ? <UserDetails /> : <OrdersCard />}
-        </div>
+        
+        <Footer />
       </div>
-
-      <div className="w-full mt-[2%]"></div>
-    </div>
+    </UserProvider>
   );
 };
 

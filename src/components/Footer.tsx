@@ -49,11 +49,7 @@ const Footer = () => {
                   Health Verification
                 </a>
               </li>
-              <li>
-                <a href="#" className="hover:text-green-200">
-                  Transportation
-                </a>
-              </li>
+
               <li>
                 <a href="#" className="hover:text-green-200">
                   About Us

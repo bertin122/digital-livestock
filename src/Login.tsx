@@ -9,6 +9,8 @@ import {
   User,
 } from "lucide-react";
 import { useAdmin } from "./contexts/AdminContext";
+import { BASE_URL } from "./constants/urls";
+import { setUserId } from "./services/auth";
 
 interface LoginData {
   email: string;
@@ -50,40 +52,44 @@ const LoginCard: React.FC = () => {
       return;
     }
 
-    // For regular user login, mock success (since backend may not be available)
+    // Enforce gmail-only logins for normal users
+    const isGmail = /.+@gmail\.com$/i.test(email.trim());
+    if (!isGmail) {
+      setError("Only Gmail addresses (@gmail.com) are allowed to login.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      // Optional: Attempt API call if backend is running
-      const response = await fetch("http://localhost:3000/user/api/signin", {
+      const response = await fetch(`${BASE_URL}/user/api/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("User login successful:", data);
-        localStorage.setItem("token", data.token || "user-mock-token");
-        localStorage.setItem("isAdmin", "false");
-        window.location.href = "/home";
-      } else {
-        // Mock successful user login for demo
-        console.log(
-          "Mocking user login for demo purposes (API returned error)"
-        );
-        localStorage.setItem("token", "user-mock-token");
-        localStorage.setItem("isAdmin", "false");
-        window.location.href = "/home";
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.message || "Invalid email or password");
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      // Mock on network error (backend not running)
-      console.log("Backend not available, using mock login");
-      localStorage.setItem("token", "user-mock-token");
+
+      const token = data.token || data.accessToken || data.access_token;
+      if (!token) {
+        throw new Error("Login succeeded but no token returned");
+      }
+
+      localStorage.setItem("token", token);
       localStorage.setItem("isAdmin", "false");
+
+      // Try to capture and store the user id from the response
+      const userId =
+        data.user?.id ?? data.userId ?? data.user_id ?? data.id ?? null;
+      if (userId != null) setUserId(userId);
+
       window.location.href = "/home";
+    } catch (err) {
+      console.error("User login error:", err);
+      setError(err instanceof Error ? err.message : "Failed to login");
     } finally {
       setIsLoading(false);
     }
@@ -228,6 +234,15 @@ const LoginCard: React.FC = () => {
                 "LOGIN"
               )}
             </button>
+
+            <div className="text-center mt-6">
+              <p className="text-sm text-gray-600">
+                Don&apos;t have an account?{' '}
+                <a href="/register" className="text-green-600 hover:text-green-700 font-semibold">
+                  REGISTER HERE
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </div>

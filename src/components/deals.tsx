@@ -20,7 +20,7 @@ const CowCard = () => {
         setCow(data);
 
         if (data.owner) {
-          const ownerRes = await fetch(`${BASE_URL}/user/namebyid`, {
+          const ownerRes = await fetch(`${BASE_URL}/user/api/namebyid`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: data.owner }),

@@ -78,9 +78,9 @@ const OrderCard: React.FC<OrderCardProps> = ({
             </div>
 
             <div className='w-[85%] flex flex-col gap-1'>
-              <p className='font-bold text-sm'>Mobile Money</p>
+              <p className='font-bold text-sm'>Mobile Number</p>
               <p className='text-xs text-gray-700 leading-tight'>
-                Confirm payment on your phone and wait for the order to succeed.
+                Confirm on your phone and wait for the order to succeed.
               </p>
               <input
                 type='tel'

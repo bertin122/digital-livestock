@@ -7,6 +7,8 @@ import Cartcow from "../components/cartcow";
 import Modal from "../modals/modal";
 import { ShoppingCart } from "lucide-react";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { getUserId } from "../services/auth";
 
 interface Cow {
   id: number;
@@ -41,11 +43,16 @@ const Cart = () => {
 
   useEffect(() => {
     const fetchCartItems = async () => {
+      const uid = getUserId();
+      if (!uid) {
+        setCartItems([]);
+        return;
+      }
       try {
         const response = await fetch(`${BASE_URL}/api/cart/itemsbyid`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: 1 }),
+          body: JSON.stringify({ user_id: uid }),
         });
         const data = await response.json();
         setCartItems(data);
@@ -216,6 +223,7 @@ const Cart = () => {
         </Modal>
       )}
 
+      <Footer />
       <div className="w-full  h-[20%] mt-[2%]"></div>
     </div>
   );

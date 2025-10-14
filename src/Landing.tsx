@@ -15,7 +15,7 @@ const CowMarketLandingPage = () => {
     return () => clearInterval(interval);
   }, []);
   return (
-    <div className="h-screen w-screen bg-gray-50">
+    <div className="min-h-screen w-screen bg-gray-50">
       <Navbar />
 
       {/* Hero Section */}
@@ -67,6 +67,7 @@ const CowMarketLandingPage = () => {
           </div>
         </div>
       </section>
+      {/* <Footer /> */}
     </div>
   );
 };

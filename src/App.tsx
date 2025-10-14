@@ -32,50 +32,53 @@ import UserManagement from "./admin/UserManagement";
 import Reports from "./admin/Reports";
 import Settings from "./admin/Settings";
 import { AdminProvider } from "./contexts/AdminContext";
+import { UserProvider } from "./contexts/UserContext";
 
 const App: React.FC = () => {
   return (
     <Router>
-      <AdminProvider>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/home" element={<Home />} />
-          <Route path="/" element={<Navigate to="/landing" replace />} />
-          <Route path="/landing" element={<Landing />} />
-          <Route
-            path="/about"
-            element={<AboutUs setShowAboutUs={() => {}} />}
-          />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/login" element={<LoginCard />} />
-          <Route path="/register" element={<RegisterCard />} />
+      <UserProvider>
+        <AdminProvider>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Navigate to="/landing" replace />} />
+            <Route path="/landing" element={<Landing />} />
+            <Route
+              path="/about"
+              element={<AboutUs setShowAboutUs={() => {}} />}
+            />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/login" element={<LoginCard />} />
+            <Route path="/register" element={<RegisterCard />} />
 
-          <Route path="/cow/:id" element={<CowPage />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/profile" element={<Profile />} />
+            <Route path="/cow/:id" element={<CowPage />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/profile" element={<Profile />} />
 
-          {/* User Dashboard */}
-          <Route path="/dashboard" element={<UserLayout />}>
-            <Route index element={<UserDashboard />} />
-            <Route path="profile" element={<UserProfile />} />
-            <Route path="orders" element={<UserOrders />} />
-            <Route path="add-product" element={<AddProduct />} />
-            <Route path="favorites" element={<UserFavorites />} />
-            <Route path="settings" element={<UserSettings />} />
-          </Route>
+            {/* User Dashboard */}
+            <Route path="/dashboard" element={<UserLayout />}>
+              <Route index element={<UserDashboard />} />
+              <Route path="profile" element={<UserProfile />} />
+              <Route path="orders" element={<UserOrders />} />
+              <Route path="add-product" element={<AddProduct />} />
+              <Route path="favorites" element={<UserFavorites />} />
+              <Route path="settings" element={<UserSettings />} />
+            </Route>
 
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="products" element={<ProductManagement />} />
-            <Route path="users" element={<UserManagement />} />
-            <Route path="reports" element={<Reports />} />
-            <Route path="settings" element={<Settings />} />
-          </Route>
-        </Routes>
-      </AdminProvider>
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="products" element={<ProductManagement />} />
+              <Route path="users" element={<UserManagement />} />
+              <Route path="reports" element={<Reports />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+          </Routes>
+        </AdminProvider>
+      </UserProvider>
     </Router>
   );
 };

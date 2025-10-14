@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -47,11 +48,11 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
 
       {/* Main Content */}
-      <div className="flex min-h-screen">
+      <div className="flex flex-1">
         {/* Left Side - Contact Form */}
         <div className="w-full lg:w-1/2 p-8 lg:p-16">
           <div className="max-w-lg">
@@ -329,6 +330,7 @@ const ContactPage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
